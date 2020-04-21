@@ -24,4 +24,9 @@ public class testStepDef {
         firstTest.sendRequestAndCheckStatus(url, code, firstTest.createInCorrectJSON("", "tomorrow at 12:00", "en", 4));
     }
 
+    @Когда("^выполнен POST запрос на URL \"([^\"]*)\" без токена. Ожидается код ответа: (\\d+)$")
+    public void sendRequestWithoutToken(String url, int code){
+        firstTest.sendRequestWithotToken(url, code, firstTest.createInCorrectJSON("MyTest", "tomorrow at 12:00", "en", 4));
+    }
+
 }

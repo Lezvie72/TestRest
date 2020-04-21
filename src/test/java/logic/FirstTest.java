@@ -24,4 +24,13 @@ public class FirstTest {
                 .statusCode(code);
     }
 
+    public void sendRequestWithotToken(String url, int code, JSONObject jsonObject) {
+        given().log().headers().log().body()
+                .contentType("application/json\r\n")
+                .body(jsonObject.toString())
+                .when().post(url)
+                .then().log().body()
+                .statusCode(code);
+    }
+
 }
