@@ -3,38 +3,35 @@ import org.json.simple.JSONObject;
 import org.json.JSONTokener;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import paths.Paths;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-public class FirstTest {
+public class MainLogic {
 
 
-    public static JSONObject test(String jsonFileName) {
-        String baseDir = System.getProperty("user.dir");
-        String jsonDir = baseDir + "/src/test/java/jsons/";
-        File file = new File(jsonDir + jsonFileName + ".json");
+    public static JSONObject takeJsonToSend(String jsonFileName) {
+        File file = new File(Paths.pathToJsons() + jsonFileName + ".json");
         try {
             return (JSONObject) readJsonSimpleDemo(file);
         }
-        catch (Exception ignored) {
-
-        }
+        catch (Exception ignored) {}
         return null;
     }
 
-    public static Object readJsonSimpleDemo(File file) throws Exception {
-        file.createNewFile();
+    private static Object readJsonSimpleDemo(File file) throws Exception {
         FileReader reader = new FileReader(file);
         JSONParser jsonParser = new JSONParser();
         return jsonParser.parse(reader);
     }
 
-    public void sendRequestAndCheckStatus(String url, int code, JSONObject jsonObject) {
+    public void sendPOSTRequestAndCheckStatus(String url, int code, JSONObject jsonObject) {
         given().log().headers().log().body()
                 .header("Authorization", "Bearer 694e9a123386e3ee235bea79b50b68df5da41dbf")
                 .contentType("application/json\r\n")
@@ -44,11 +41,10 @@ public class FirstTest {
                 .statusCode(code);
     }
 
-    public void sendRequestWithotToken(String url, int code, JSONObject jsonObject) {
-        given().log().headers().log().body()
-                .contentType("application/json\r\n")
-                .body(jsonObject.toString())
-                .when().post(url)
+    public void sendGETRequestAndCheckStatus(String url, int code, Map<String, ?> map) {
+        given().log().all()
+                .queryParams(map)
+                .when().get(url)
                 .then().log().body()
                 .statusCode(code);
     }

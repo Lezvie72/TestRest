@@ -1,27 +1,46 @@
 package stepDef;
 import cucumber.api.DataTable;
 import cucumber.api.java.ru.Когда;
-import cucumber.api.java.ru.Тогда;
-import logic.FirstTest;
+import logic.MainLogic;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class testStepDef {
 
-    FirstTest firstTest = new FirstTest();
+    MainLogic mainLogic = new MainLogic();
     String nameOfJson = null;
+    Map<String, String> headers = new HashMap<>();
+    Map<String, Object>params = new HashMap<>();
 
-    @Когда("^выполнен POST запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")
-    public void sendRequest(String url, int code, DataTable arg){
-        List<List<String>> table = arg.asLists(String.class);
+    private void prepareData(List<List<String>> table) {
         for (int i=0; i<table.size(); i++) {
             switch (table.get(i).get(0)){
                 case ("BODY"):
                     nameOfJson = table.get(i).get(2);
                     break;
+                case ("PARAMS"):
+                    params.put(table.get(i).get(1), table.get(i).get(2));
+                    break;
+                case ("HEADER"):
+                    headers.put(table.get(i).get(1), table.get(i).get(2));
+                    break;
             }
         }
-        firstTest.sendRequestAndCheckStatus(url, code, FirstTest.test(nameOfJson));
+    }
+
+    @Когда("^выполнен POST запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")
+    public void sendPOSTRequest(String url, int code, DataTable arg){
+        List<List<String>> table = arg.asLists(String.class);
+        prepareData(table);
+        mainLogic.sendPOSTRequestAndCheckStatus(url, code, MainLogic.takeJsonToSend(nameOfJson));
+    }
+
+    @Когда("^выполнен GET запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")
+    public void sendGETRequest(String url, int code, DataTable arg){
+        List<List<String>> table = arg.asLists(String.class);
+        prepareData(table);
+        mainLogic.sendGETRequestAndCheckStatus(url, code, params);
     }
 }
