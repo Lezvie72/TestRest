@@ -1,6 +1,9 @@
 package logic;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.junit.Assert;
 import paths.Paths;
 
 import java.io.File;
@@ -38,20 +41,26 @@ public class MainLogic {
 
     public void sendPOSTRequestAndCheckStatus(String url, int code, JSONObject jsonObject) {
         String urlValue = urlValue(url);
-        given().log().headers().log().body()
+        RequestSpecification requestSpecification =
+                given().log().headers().log().body()
                 .header("Authorization", "Bearer 694e9a123386e3ee235bea79b50b68df5da41dbf")
                 .contentType("application/json\r\n")
-                .body(jsonObject.toString())
-                .when().post(urlValue)
-                .then().log().body()
+                .body(jsonObject.toString());
+        Response response =
+                requestSpecification.when().post(urlValue);
+
+        response.then().log().body()
                 .statusCode(code);
     }
 
     public void sendGETRequestAndCheckStatus(String url, int code, Map<String, ?> map) {
-        given().log().all()
-                .queryParams(map)
-                .when().get(url)
-                .then().log().body()
+        RequestSpecification requestSpecification =
+                given().log().all()
+                .queryParams(map);
+        Response response =
+                requestSpecification.when().get(url);
+
+        response.then().log().body()
                 .statusCode(code);
     }
 
