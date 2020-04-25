@@ -22,7 +22,11 @@ public class MainLogic {
     }
 
     private String urlValue(String endPoint) {
+        if (endPoint.startsWith("http"))
+            return endPoint;
         Properties PROPERTIES = Paths.getPropertiesInstance();
+        if (PROPERTIES.getProperty(endPoint).startsWith("http"))
+            return PROPERTIES.getProperty(endPoint);
         return PROPERTIES.getProperty("baseURI") + PROPERTIES.getProperty(endPoint);
     }
 
