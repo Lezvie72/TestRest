@@ -10,10 +10,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 
 public class MainLogic {
+
+    private static final Properties PROPERTIES = Paths.getPropertiesInstance();
 
 
     public static JSONObject takeJsonToSend(String jsonFileName) {
@@ -23,6 +26,10 @@ public class MainLogic {
         }
         catch (Exception ignored) {}
         return null;
+    }
+
+    private String urlValue(String endPoint) {
+        return PROPERTIES.getProperty(endPoint);
     }
 
     private static Object readJsonSimpleDemo(File file) throws Exception {
@@ -36,7 +43,7 @@ public class MainLogic {
                 .header("Authorization", "Bearer 694e9a123386e3ee235bea79b50b68df5da41dbf")
                 .contentType("application/json\r\n")
                 .body(jsonObject.toString())
-                .when().post(url)
+                .when().post(urlValue(urlValue(url)))
                 .then().log().body()
                 .statusCode(code);
     }
