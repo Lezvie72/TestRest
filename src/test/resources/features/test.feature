@@ -12,7 +12,7 @@
       | myJson        | 200        |
 
   Сценарий: тест
-    Когда выполнен POST запрос на URL "https://api.todoist.com/rest/v1/tasks" с параметрами из таблицы. Ожидается код ответа: 200
+    Когда выполнен POST запрос на URL "tasks" с параметрами из таблицы. Ожидается код ответа: 200
       | BODY   |           | myJson |
       | PARAMS | myPAram1  | 45     |
       | PARAMS | myPAram2  | 11     |

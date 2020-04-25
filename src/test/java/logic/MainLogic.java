@@ -16,9 +16,6 @@ import static io.restassured.RestAssured.given;
 
 public class MainLogic {
 
-    private static final Properties PROPERTIES = Paths.getPropertiesInstance();
-
-
     public static JSONObject takeJsonToSend(String jsonFileName) {
         File file = new File(Paths.pathToJsons() + jsonFileName + ".json");
         try {
@@ -29,6 +26,7 @@ public class MainLogic {
     }
 
     private String urlValue(String endPoint) {
+        Properties PROPERTIES = Paths.getPropertiesInstance();
         return PROPERTIES.getProperty(endPoint);
     }
 
@@ -39,11 +37,12 @@ public class MainLogic {
     }
 
     public void sendPOSTRequestAndCheckStatus(String url, int code, JSONObject jsonObject) {
+        String urlValue = urlValue(url);
         given().log().headers().log().body()
                 .header("Authorization", "Bearer 694e9a123386e3ee235bea79b50b68df5da41dbf")
                 .contentType("application/json\r\n")
                 .body(jsonObject.toString())
-                .when().post(urlValue(urlValue(url)))
+                .when().post(urlValue)
                 .then().log().body()
                 .statusCode(code);
     }

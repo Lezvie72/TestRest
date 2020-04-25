@@ -10,8 +10,8 @@ import java.util.Properties;
 
 public class Paths {
 
-    private static final String PROPERTIES_FILE = "/application.properties";
     private static final String baseDir = System.getProperty("user.dir");
+    private static final String PROPERTIES_FILE = "/application.properties";
 
     public static String pathToJsons() {
         return baseDir + "/src/test/java/jsons/";
