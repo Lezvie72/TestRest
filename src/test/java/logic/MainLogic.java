@@ -1,14 +1,10 @@
 package logic;
 import org.json.simple.JSONObject;
-import org.json.JSONTokener;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import paths.Paths;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,7 +23,7 @@ public class MainLogic {
 
     private String urlValue(String endPoint) {
         Properties PROPERTIES = Paths.getPropertiesInstance();
-        return PROPERTIES.getProperty(endPoint);
+        return PROPERTIES.getProperty("baseURI") + PROPERTIES.getProperty(endPoint);
     }
 
     private static Object readJsonSimpleDemo(File file) throws Exception {
