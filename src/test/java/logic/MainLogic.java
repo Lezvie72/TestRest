@@ -3,7 +3,10 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.junit.Assert;
+import io.restassured.module.jsv.JsonSchemaValidator;
+
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import paths.Paths;
 
 import java.io.File;
@@ -54,14 +57,17 @@ public class MainLogic {
     }
 
     public void sendGETRequestAndCheckStatus(String url, int code, Map<String, ?> map) {
+        String urlValue = urlValue(url);
         RequestSpecification requestSpecification =
                 given().log().all()
                 .queryParams(map);
         Response response =
-                requestSpecification.when().get(url);
+                requestSpecification.when().get(urlValue);
 
         response.then().log().body()
                 .statusCode(code);
+        //response.then().assertThat().body(matchesJsonSchema(Paths.pathToJsons() + "forCheckResponses" + "findByStatus.json"));
+                //matchesJsonSchemaInClasspath("findByStatus.json"));
     }
 
 }

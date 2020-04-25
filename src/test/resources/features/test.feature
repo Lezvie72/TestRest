@@ -20,7 +20,7 @@
       | HEADER | myHeader2 | 33     |
 
   Структура сценария: : тестим GET
-    Когда выполнен GET запрос на URL "https://petstore.swagger.io/v2/pet/findByStatus" с параметрами из таблицы. Ожидается код ответа: 200
+    Когда выполнен GET запрос на URL "findByStatus" с параметрами из таблицы. Ожидается код ответа: 200
       | PARAMS | status | <status> |
     Примеры:
       | status    |
