@@ -1,4 +1,5 @@
 package stepDef;
+
 import cucumber.api.DataTable;
 import cucumber.api.java.ru.Когда;
 import logic.MainLogic;
@@ -12,11 +13,11 @@ public class testStepDef {
     MainLogic mainLogic = new MainLogic();
     String nameOfJson = null;
     Map<String, String> headers = new HashMap<>();
-    Map<String, Object>params = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
 
     private void prepareData(List<List<String>> table) {
-        for (int i=0; i<table.size(); i++) {
-            switch (table.get(i).get(0)){
+        for (int i = 0; i < table.size(); i++) {
+            switch (table.get(i).get(0)) {
                 case ("BODY"):
                     nameOfJson = table.get(i).get(2);
                     break;
@@ -31,16 +32,28 @@ public class testStepDef {
     }
 
     @Когда("^выполнен POST запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")
-    public void sendPOSTRequest(String url, int code, DataTable arg){
+    public void sendPOSTRequest(String url, int code, DataTable arg) {
         List<List<String>> table = arg.asLists(String.class);
         prepareData(table);
         mainLogic.sendPOSTRequestAndCheckStatus(url, code, MainLogic.takeJsonToSend(nameOfJson));
     }
 
-    @Когда("^выполнен GET запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")
-    public void sendGETRequest(String url, int code, DataTable arg){
+    @Когда("^выполнен DELEATE запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")
+    public void sendDELEATERequest(String url, int code, DataTable arg) {
         List<List<String>> table = arg.asLists(String.class);
         prepareData(table);
-        mainLogic.sendGETRequestAndCheckStatus(url, code, params);
+        mainLogic.sendDELEATERequestAndCheckStatus(url, code, MainLogic.takeJsonToSend(nameOfJson));
+    }
+
+    @Когда("^выполнен GET запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")
+    public void sendGETRequest(String url, int code, DataTable arg) {
+        List<List<String>> table = arg.asLists(String.class);
+        prepareData(table);
+        mainLogic.sendGETRequestWithParamAndCheckStatus(url, code, params, headers);
+    }
+
+    @Когда("^выполнен GET запрос на URL \"([^\"]*)\". Ожидается код ответа: (.*)$")
+    public void sendGETRequest(String url, int code) {
+        mainLogic.sendGETRequestAndCheckStatus(url, code);
     }
 }

@@ -56,11 +56,26 @@ public class MainLogic {
                 .statusCode(code);
     }
 
-    public void sendGETRequestAndCheckStatus(String url, int code, Map<String, ?> map) {
+    public void sendDELEATERequestAndCheckStatus(String url, int code, JSONObject jsonObject) {
+        String urlValue = urlValue(url);
+        RequestSpecification requestSpecification =
+                given().log().headers().log().body()
+                        .header("Authorization", "Bearer 694e9a123386e3ee235bea79b50b68df5da41dbf")
+                        .contentType("application/json\r\n")
+                        .body(jsonObject.toString());
+        Response response =
+                requestSpecification.when().delete(urlValue);
+
+        response.then().log().body()
+                .statusCode(code);
+    }
+
+    public void sendGETRequestWithParamAndCheckStatus(String url, int code, Map<String, ?> map, Map<String, ?>header) {
         String urlValue = urlValue(url);
         RequestSpecification requestSpecification =
                 given().log().all()
-                .queryParams(map);
+                .queryParams(map)
+                .headers(header);
         Response response =
                 requestSpecification.when().get(urlValue);
 
@@ -68,6 +83,19 @@ public class MainLogic {
                 .statusCode(code);
         //response.then().assertThat().body(matchesJsonSchema(Paths.pathToJsons() + "forCheckResponses" + "findByStatus.json"));
                 //matchesJsonSchemaInClasspath("findByStatus.json"));
+    }
+
+    public void sendGETRequestAndCheckStatus(String url, int code) {
+        String urlValue = urlValue(url);
+        RequestSpecification requestSpecification =
+                given().log().all();
+        Response response =
+                requestSpecification.when().get(urlValue);
+
+        response.then().log().body()
+                .statusCode(code);
+        //response.then().assertThat().body(matchesJsonSchema(Paths.pathToJsons() + "forCheckResponses" + "findByStatus.json"));
+        //matchesJsonSchemaInClasspath("findByStatus.json"));
     }
 
 }
