@@ -38,11 +38,11 @@ public class testStepDef {
         mainLogic.sendPOSTRequestAndCheckStatus(url, code, MainLogic.takeJsonToSend(nameOfJson));
     }
 
-    @Когда("^выполнен DELEATE запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")
+    @Когда("^выполнен DELEATE запрос на URL \"([^\"]*)\". Ожидается код ответа: (.*)$")
     public void sendDELEATERequest(String url, int code, DataTable arg) {
         List<List<String>> table = arg.asLists(String.class);
         prepareData(table);
-        mainLogic.sendDELEATERequestAndCheckStatus(url, code, MainLogic.takeJsonToSend(nameOfJson));
+        mainLogic.sendDELEATERequestAndCheckStatus(url, code, params, headers);
     }
 
     @Когда("^выполнен GET запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")

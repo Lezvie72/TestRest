@@ -56,13 +56,13 @@ public class MainLogic {
                 .statusCode(code);
     }
 
-    public void sendDELEATERequestAndCheckStatus(String url, int code, JSONObject jsonObject) {
+    public void sendDELEATERequestAndCheckStatus(String url, int code, Map<String, ?> map, Map<String, ?>header) {
         String urlValue = urlValue(url);
         RequestSpecification requestSpecification =
                 given().log().headers().log().body()
-                        .header("Authorization", "Bearer 694e9a123386e3ee235bea79b50b68df5da41dbf")
-                        .contentType("application/json\r\n")
-                        .body(jsonObject.toString());
+                        .headers(header)
+                        .queryParams(map)
+                        .contentType("application/json\r\n");
         Response response =
                 requestSpecification.when().delete(urlValue);
 
