@@ -14,19 +14,22 @@ public class testStepDef {
     String nameOfJson = null;
     Map<String, String> headers = new HashMap<>();
     Map<String, Object> params = new HashMap<>();
+    String endPointForDelete = null;
 
     private void prepareData(List<List<String>> table) {
-        for (int i = 0; i < table.size(); i++) {
-            switch (table.get(i).get(0)) {
+        for (List<String> strings : table) {
+            switch (strings.get(0)) {
                 case ("BODY"):
-                    nameOfJson = table.get(i).get(2);
+                    nameOfJson = strings.get(2);
                     break;
                 case ("PARAMS"):
-                    params.put(table.get(i).get(1), table.get(i).get(2));
+                    params.put(strings.get(1), strings.get(2));
                     break;
                 case ("HEADER"):
-                    headers.put(table.get(i).get(1), table.get(i).get(2));
+                    headers.put(strings.get(1), strings.get(2));
                     break;
+                case ("DELETE"):
+                    endPointForDelete = strings.get(2);
             }
         }
     }
@@ -38,11 +41,11 @@ public class testStepDef {
         mainLogic.sendPOSTRequestAndCheckStatus(url, code, MainLogic.takeJsonToSend(nameOfJson));
     }
 
-    @Когда("^выполнен DELEATE запрос на URL \"([^\"]*)\". Ожидается код ответа: (.*)$")
+    @Когда("^выполнен DELETE запрос на URL \"([^\"]*)\" с параметром из таблицы. Ожидается код ответа: (.*)$")
     public void sendDELEATERequest(String url, int code, DataTable arg) {
         List<List<String>> table = arg.asLists(String.class);
         prepareData(table);
-        mainLogic.sendDELEATERequestAndCheckStatus(url, code, params, headers);
+        mainLogic.sendDELEATERequestAndCheckStatus(url, code, params, headers, endPointForDelete);
     }
 
     @Когда("^выполнен GET запрос на URL \"([^\"]*)\" с параметрами из таблицы. Ожидается код ответа: (.*)$")

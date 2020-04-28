@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"stepDef", "runners"},
-        tags = {"@test", "~@ignore"},
+        tags = {"@test1", "~@ignore"},
 //        tags = {"@mock", "~@ignore"},
         strict = true,
         snippets = SnippetType.CAMELCASE,
