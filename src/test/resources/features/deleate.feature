@@ -1,5 +1,5 @@
 # language: ru
-@test1
+@test
 
 Функционал: проверка АПИ deleate
 
